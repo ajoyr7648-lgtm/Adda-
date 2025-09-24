@@ -251,6 +251,23 @@
     color: #222;
     font-weight: 600;
   }
+  
+  /* History download button styling */
+  .history-download-btn {
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: #0b63d6;
+      color: #fff;
+      border: none;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      margin-top: auto;
+  }
+  .history-download-btn:hover {
+      background: #0088cc;
+  }
 
   /* Review section specific styles */
   .review-footer {
@@ -313,7 +330,6 @@
     }
   }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 
@@ -457,7 +473,7 @@
       <h2 id="successTitle">🎉 আবেদন সম্পন্ন!</h2>
       <p id="successText" style="font-size:16px;color:#0b63d6;margin-top:10px;">তোমার আবেদন গ্রহণ করা হয়েছে — যাচাইয়ের পর লিংক প্রেরণ করা হবে।</p>
       
-      <div id="receipt-container" class="receipt-box">
+      <div id="receipt-container" class="receipt-box" style="display:none;">
           <div class="receipt-header">টেলিগ্ৰাম বাজার</div>
           <div class="receipt-item">
               <span class="receipt-label">👤 নাম:</span>
@@ -531,8 +547,8 @@ const slide2Data = [
   {name:"চাইনিজ গ্ৰুপ🔞", note:"এখানে 40 হাজার প্লাস ভিডিও ও ফটো পাবে । আর HD দেখতে পাবে কেনার সময় অবশ্যই ডেমো দেখো 🔥", price:49, demoLink:"https://t.me/allinonedemo69/31?single"},
   {name:"Tamil Maja 🔞", note:"সকল এক্সক্লুসিভ কন্টেন্ট করে দেখতে পাবে । সাথে ডাউনলোড সুবিধা এবং লাইফ টাইম এর  জন্য । আইডি নষ্ট হলে অন্য আইডিতে এড পাবে ", price:29, demoLink:"https://t.me/allinonedemo69/34?single"},
   {name:"Heaven House🔞", note:"2.6 হাজার প্লাস ভিডিও । এবং প্রতিনিয়ত আপলোড চলতেছে । সাথে ডাউনলোড সুবিধা লাইফ টাইম এর জন্য । আইডি নষ্ট হলে অন্য আইডিতে পাবে ", price:40, demoLink:"https://t.me/allinonedemo69/42?single"},
-  {name:"Mega Links (500 GB+)🔞", note:"এই মেঘা লিংক গুলোতে পাবে  700000 হাজার প্লাস ভিডিও । সকল ধরনের ভিডিও ফোল্ডার আকারে  পছন্দ মতো দেখতে পাবে ও ডাউনলোড করতে পারবে লাইফ টাইম এর জন্য । আইডি নষ্ট হলে অন্য আইডিতে অ্যাড পাবে ", price:299, demoLink:"https://t.me/allinonedemo69/48?single"},
-  {name:"CCTV🔞", note:"মোট পাঁচটা প্রিমিয়াম গ্রুপের লিংক পাবে । এখানে মোট ১৫ হাজার প্লাস ভিডিও আছে লাইফ টাইম এর জন্য আইডি নষ্ট হয়ে গেলে অন্য আইডিতে এড পাবে", price:149, demoLink:"https://t.me/allinonedemo69/44?single"},
+  {name:"Mega Links (500 GB+)🔞", note:"এই মেঘা লিংক গুলোতে পাবে  700000 হাজার প্লাস ভিডিও । সকল ধরনের ভিডিও ফোল্ডার আকারে  পছন্দ মতো দেখতে পাবে ও ডাউনলোড করতে পারবে লাইফ টাইম এর জন্য । আইডি নষ্ট হলে অন্য আইডিতে এড পাবে ", price:299, demoLink:"https://t.me/allinonedemo69/48?single"},
+  {name:"CCTV🔞", note:"এখানে মোট পাঁচটা প্রিমিয়াম গ্রুপের লিংক পাবে । এখানে মোট ১৫ হাজার প্লাস ভিডিও আছে লাইফ টাইম এর জন্য আইডি নষ্ট হয়ে গেলে অন্য আইডিতে এড পাবে", price:149, demoLink:"https://t.me/allinonedemo69/44?single"},
   {name:"Combo(20+ Premium Group Links)🔞", note:"এখানে মোট বিশটি  প্রিমিয়াম গ্রুপের লিংক পাবে যেখানে ৪০ হাজারের অধিক ভিডিও আছে ", price:69, demoLink:"https://t.me/allinonedemo69/52"},
   {name:"Hidden Cam in Market 🔞", note:"এখানে সকল এক্সক্লুসিভ কন্টেন প্রতিনিয়ত আপলোড করা হচ্ছে এইচডিতে। আইডি নষ্ট হলে অন্য আইডিতে এড পাবে। একবার কিনুন, আজীবন ব্যবহার করুন", price:99, demoLink:"https://t.me/allinonedemo69/53"},
   {name:"গোসল in River ", note:"এখানে তুমি পাঁচ হাজার প্লাস ভিডিও পাবে এবং প্রতিনিয়ত ভিডিও আপলোড করা হচ্ছে। সাথে থাকতে ডাউনলোড সুবিধা লাইফ টাইমের জন্য । আইডি নষ্ট হলে অন্য আইডিতে এড পাবে", price:139, demoLink:"https://t.me/allinonedemo69/54?single"},
@@ -552,6 +568,10 @@ function loadDataFromLocalStorage() {
     if (storedCart) {
       cart = JSON.parse(storedCart);
     }
+    const storedReceipts = localStorage.getItem('purchaseReceipts');
+    if (storedReceipts) {
+        receipts = JSON.parse(storedReceipts);
+    }
   } catch (e) {
     console.error("Failed to load data from Local Storage", e);
   }
@@ -562,15 +582,16 @@ function saveDataToLocalStorage() {
   try {
     localStorage.setItem('purchaseHistoryData', JSON.stringify(purchasedHistory));
     localStorage.setItem('cartData', JSON.stringify(cart));
+    localStorage.setItem('purchaseReceipts', JSON.stringify(receipts));
   } catch (e) {
     console.error("Failed to save data to Local Storage", e);
   }
 }
 
-
 let cart = [];
 let purchasedHistory = [];
-let lastPaymentDetails = {}; // নতুন ভ্যারিয়েবল
+let lastPaymentDetails = {};
+let receipts = {}; // নতুন ভ্যারিয়েবল
 
 /* ============================
    Language Data
@@ -614,6 +635,7 @@ const langData = {
     backBtnText: 'Back',
     backToHomeBtnText: 'Back to Home',
     notAddedBtnText: 'এখনো এড পাইনি',
+    downloadReceiptBtnText: 'প্রমাণপত্র ডাউনলোড করুন',
     addedToCart: 'কার্টে যোগ করা হয়েছে!',
     buyFromCart: '💸 কার্ট থেকে পেমেন্ট করুন',
     buyNowText: '💸 Buy Now',
@@ -659,6 +681,7 @@ const langData = {
     backBtnText: 'Back',
     backToHomeBtnText: 'Back to Home',
     notAddedBtnText: 'Not Added Yet',
+    downloadReceiptBtnText: 'Download Receipt',
     addedToCart: 'Added to cart!',
     buyFromCart: '💸 Pay from Cart',
     buyNowText: '💸 Buy Now',
@@ -720,7 +743,7 @@ function setLanguage(lang) {
   }
 }
 
-/* ============================
+/* ==========================
    Navigation / Views
    ============================ */
 const VIEWS = ['tgMarket','slide1','slide2','slide3','cartSlide','paymentSlide','successSlide'];
@@ -1021,9 +1044,11 @@ function showPaymentForCart() {
         purchasedHistory.push({
             name: item.name,
             price: item.price,
-            time: purchaseTime
+            time: purchaseTime,
+            receiptId: null // initially null
         });
     });
+    
     cart = []; // Clear the cart
     saveDataToLocalStorage(); // ডেটা সেভ করুন
     
@@ -1047,7 +1072,8 @@ function showPaymentForSingleItem(item) {
     purchasedHistory.push({
         name: item.name,
         price: item.price,
-        time: purchaseTime
+        time: purchaseTime,
+        receiptId: null // initially null
     });
     saveDataToLocalStorage(); // ডেটা সেভ করুন
     
@@ -1068,7 +1094,7 @@ function renderHistory(){
   }
   
   noHistoryText.style.display = 'none';
-  purchasedHistory.forEach(item => {
+  purchasedHistory.forEach((item, index) => {
     const div = document.createElement('div');
     div.className = 'listItem';
     
@@ -1078,18 +1104,43 @@ function renderHistory(){
                       <div style="font-size:14px;color:#555;margin-top:4px;">${langData[currentLang].priceLabel} ${item.price} ${langData[currentLang].currency}</div>
                       <div style="font-size:12px;color:#777;margin-top:2px;">${item.time}</div>`;
     
-    const supportBtn = document.createElement('a');
-    supportBtn.className = 'smallBtn btn ghost';
-    supportBtn.style = 'padding:8px 12px; border:1px solid #d4e8ff; text-decoration:none; margin-top: auto; white-space:nowrap;';
-    supportBtn.href = 'https://t.me/live_support_24_7';
-    supportBtn.target = '_blank';
-    supportBtn.textContent = langData[currentLang].notAddedBtnText;
+    const actionBtnContainer = document.createElement('div');
+    actionBtnContainer.style = 'display:flex; flex-direction:column; gap:8px;';
+
+    const supportLink = document.createElement('a');
+    supportLink.href = TELEGRAM_SUPPORT_LINK;
+    supportLink.target = '_blank';
+    supportLink.className = 'smallBtn btn ghost';
+    supportLink.style = 'padding:8px 12px; border:1px solid #d4e8ff; text-decoration:none; margin-top: auto; white-space:nowrap;';
+    supportLink.textContent = langData[currentLang].notAddedBtnText;
     
     div.appendChild(info);
-    div.appendChild(supportBtn);
+    
+    // Check if a receipt exists for this item
+    if (receipts[item.receiptId]) {
+      const downloadBtn = document.createElement('button');
+      downloadBtn.className = 'history-download-btn';
+      downloadBtn.textContent = langData[currentLang].downloadReceiptBtnText;
+      downloadBtn.addEventListener('click', () => {
+          downloadReceipt(receipts[item.receiptId]);
+      });
+      actionBtnContainer.appendChild(downloadBtn);
+    }
+    
+    actionBtnContainer.appendChild(supportLink);
+    div.appendChild(actionBtnContainer);
     container.appendChild(div);
   });
 }
+
+function downloadReceipt(imageDataUrl) {
+    const link = document.createElement('a');
+    link.download = `receipt_${Date.now()}.png`;
+    link.href = imageDataUrl;
+    link.click();
+    showNotification("প্রমাণপত্র ডাউনলোড হচ্ছে।");
+}
+
 
 /* ============================
    Payment submit -> send to Telegram (via PROXY or DIRECT)
@@ -1164,8 +1215,21 @@ document.getElementById('paymentForm').addEventListener('submit', function(e){
 
   sendToTelegramServer(payload).then(res => {
     document.getElementById('successText').innerText = langData[currentLang].successText;
-    updateReceipt();
+    
+    // Generate and save receipt image
+    const receiptId = 'receipt_' + Date.now().toString();
+    const imageDataUrl = generateReceipt(lastPaymentDetails); // নতুন ফাংশন ব্যবহার
+    receipts[receiptId] = imageDataUrl;
+    
+    // Find the most recent purchase and update its receiptId
+    if (purchasedHistory.length > 0) {
+        const lastPurchase = purchasedHistory[purchasedHistory.length - 1];
+        lastPurchase.receiptId = receiptId;
+    }
+
+    saveDataToLocalStorage();
     showView('successSlide', true);
+    
   }).catch(err => {
     console.error('Send error:', err);
     alert('পেমেন্ট ডেটা টেলিগ্রামে পাঠাতে সমস্যা হয়েছে।\nError: ' + (err.message || JSON.stringify(err)));
@@ -1175,28 +1239,55 @@ document.getElementById('paymentForm').addEventListener('submit', function(e){
   });
 });
 
-/* Receipt update and download logic */
-function updateReceipt() {
-    document.getElementById('receipt-name').innerText = lastPaymentDetails.name;
-    document.getElementById('receipt-group').innerText = lastPaymentDetails.groupName;
-    document.getElementById('receipt-trx').innerText = lastPaymentDetails.trx;
-    document.getElementById('receipt-time').innerText = lastPaymentDetails.time;
-    document.getElementById('receipt-price').innerText = lastPaymentDetails.amount + " " + langData[currentLang].currency;
-}
+/* New function to generate receipt as image data URL */
+function generateReceipt(details) {
+    const canvas = document.createElement('canvas');
+    canvas.width = 400;
+    canvas.height = 300;
+    const ctx = canvas.getContext('2d');
+    
+    // Background and border
+    ctx.fillStyle = '#f8fcff';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeStyle = '#e0f0ff';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+    
+    // Header
+    ctx.fillStyle = '#0b63d6';
+    ctx.font = '24px Arial bold';
+    ctx.textAlign = 'center';
+    ctx.fillText('টেলিগ্ৰাম বাজার', canvas.width / 2, 40);
+    
+    // Receipt details
+    ctx.fillStyle = '#222';
+    ctx.font = '16px Arial';
+    ctx.textAlign = 'left';
+    
+    let y = 80;
+    const padding = 20;
 
-document.getElementById('downloadReceiptBtn').addEventListener('click', () => {
-    const receiptBox = document.getElementById('receipt-container');
-    html2canvas(receiptBox, {
-      scale: 2, // For better quality
-      backgroundColor: '#f8fcff',
-    }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'telegram_bazar_receipt.png';
-        link.href = canvas.toDataURL('image/png');
-        link.click();
+    const data = [
+        {label: '👤 নাম:', value: details.name},
+        {label: '🔗 গ্রুপ:', value: details.groupName},
+        {label: '🔑 ট্রানজেকশন আইডি:', value: details.trx},
+        {label: '📅 সময়:', value: details.time},
+        {label: '💰 দাম:', value: details.amount + " টাকা"}
+    ];
+    
+    data.forEach(item => {
+        ctx.fillStyle = '#666';
+        ctx.font = '16px Arial';
+        ctx.fillText(item.label, padding, y);
+        
+        ctx.fillStyle = '#222';
+        ctx.font = '16px Arial bold';
+        ctx.fillText(item.value, canvas.width / 2, y);
+        y += 40;
     });
-});
 
+    return canvas.toDataURL('image/png');
+}
 
 /* Copy to clipboard function */
 function copyToClipboard(elementId) {
@@ -1247,7 +1338,7 @@ const crossBtn = document.getElementById('crossBtn');
 const hasSeenNotice = localStorage.getItem('hasSeenNotice');
 
 // Replace with your actual Telegram channel link
-const TELEGRAM_CHANNEL_LINK = "https://t.me/your_telegram_channel_link";
+const TELEGRAM_CHANNEL_LINK = "https://t.me/live_support_24_7";
 
 function showWelcomeNotice() {
     if (!hasSeenNotice) {
