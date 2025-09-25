@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>টেলিগ্ৰাম বাজার — সম্পূর্ণ</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
   /* RESET */
   *{box-sizing:border-box}
@@ -228,6 +229,7 @@
     border: 1px solid #e0f0ff;
     margin-top: 24px;
     text-align: left;
+    display: none; /* Initially hide the receipt box */
   }
   .receipt-header {
     text-align: center;
@@ -312,7 +314,14 @@
   .review-input-box button {
     margin-top: 10px;
   }
-
+  .receipt-box img {
+      width: 100%;
+      height: auto;
+      margin-top: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+  }
+  
   /* SMALL RESPONSIVE TWEAKS */
   @media (max-width:480px){
     .card{padding:24px;border-radius:18px;margin:18px auto;}
@@ -456,7 +465,7 @@
       <p><span id="priceLabel">প্রাইস:</span> <b id="payGroupPrice" style="color:#0b63d6">—</b> <span id="currency">টাকা</span></p>
 
       <form id="paymentForm">
-        <p id="tgNote" style="margin-top:20px; color: #0b63d6; font-size: 14px; text-align: left; font-weight: 600;">যে টেলিগ্ৰাম আইডিতে এড হবা সেই আইডির ইউজার নাম দাও</p>
+        <p id="tgNote" style="margin-top:20px; color: #0b63d6; font-size: 14px; text-align: left; font-weight: 600;">যে টেলিগ্ৰাম আইডিতে এড হবা সেই আইডির ইউজার নাম দাও। অবশ্যই সঠিক ইউজার নেম দিবে যাতে আমরা পরে কন্টাক্ট করতে পারি ।</p>
         <input type="text" id="pay_name" placeholder="আপনার নাম" required />
         <input type="text" id="pay_tg_username" placeholder="টেলিগ্রাম ইউজারনেম (@username)" required />
         <input type="number" id="pay_amount" placeholder="টাকার পরিমাণ" required />
@@ -471,38 +480,46 @@
 
     <div id="successSlide" class="card" style="display:none;text-align:center;">
       <h2 id="successTitle">🎉 আবেদন সম্পন্ন!</h2>
-      <p id="successText" style="font-size:16px;color:#0b63d6;margin-top:10px;">তোমার আবেদন গ্রহণ করা হয়েছে — যাচাইয়ের পর লিংক প্রেরণ করা হবে।</p>
+      <p id="successText" style="font-size:16px;color:#0b63d6;margin-top:10px;">তোমার আবেদন গ্রহণ করা হয়েছে — যাচাইয়ের পর লিংক প্রেরণ করা হবে । লিংক পেতে দেরি হলে তোমার প্রমাণপত্রটি ডাউনলোড করে আমাদের লাইভ সাপোর্ট টেলিগ্রাম গ্রুপে যোগাযোগ করো ।</p>
       
-      <div id="receipt-container" class="receipt-box" style="display:none;">
-          <div class="receipt-header">টেলিগ্ৰাম বাজার</div>
-          <div class="receipt-item">
-              <span class="receipt-label">👤 নাম:</span>
-              <span class="receipt-value" id="receipt-name"></span>
-          </div>
-          <div class="receipt-item">
-              <span class="receipt-label">🔗 গ্রুপ:</span>
-              <span class="receipt-value" id="receipt-group"></span>
-          </div>
-          <div class="receipt-item">
-              <span class="receipt-label">🔑 ট্রানজেকশন আইডি:</span>
-              <span class="receipt-value" id="receipt-trx"></span>
-          </div>
-          <div class="receipt-item">
-              <span class="receipt-label">📅 সময়:</span>
-              <span class="receipt-value" id="receipt-time"></span>
-          </div>
-          <div class="receipt-item">
-              <span class="receipt-label">💰 দাম:</span>
-              <span class="receipt-value" id="receipt-price"></span>
-          </div>
+      <div id="receipt-display-box" style="margin-top:20px;">
+          <img id="receiptImage" src="" alt="Payment Receipt" style="width:100%; max-width:400px; margin:20px auto; display:none; border:1px solid #e0f0ff; border-radius:12px;" />
       </div>
 
       <div style="margin-top:20px;">
-          <button id="downloadReceiptBtn" class="smallBtn btn blue">⬇️ ডাউনলোড প্রমাণপত্র</button>
+          <button id="downloadReceiptBtn" class="smallBtn btn blue" style="display:none;">⬇️ ডাউনলোড প্রমাণপত্র</button>
       </div>
       <div style="margin-top:10px;"><button id="back4" class="smallBtn btn ghost">🏠 <span class="backToHomeBtnText">Back to Home</span></button></div>
     </div>
 
+  </div>
+    
+  <div id="receipt-template-box" class="receipt-box" style="position:absolute; left:-9999px; top:-9999px; display:block;">
+      <div class="receipt-header">টেলিগ্ৰাম বাজার</div>
+      <div class="receipt-item">
+          <span class="receipt-label">👤 নাম:</span>
+          <span class="receipt-value" id="receipt-name"></span>
+      </div>
+      <div class="receipt-item">
+          <span class="receipt-label">🔗 গ্রুপ:</span>
+          <span class="receipt-value" id="receipt-group"></span>
+      </div>
+      <div class="receipt-item">
+          <span class="receipt-label">🔑 ট্রানজেকশন আইডি:</span>
+          <span class="receipt-value" id="receipt-trx"></span>
+      </div>
+      <div class="receipt-item">
+          <span class="receipt-label">🔐 যাচাই কোড:</span>
+          <span class="receipt-value" id="receipt-code"></span>
+      </div>
+      <div class="receipt-item">
+          <span class="receipt-label">📅 সময়:</span>
+          <span class="receipt-value" id="receipt-time"></span>
+      </div>
+      <div class="receipt-item">
+          <span class="receipt-label">💰 দাম:</span>
+          <span class="receipt-value" id="receipt-price"></span>
+      </div>
   </div>
 
   <a href="https://t.me/live_support_24_7" class="live-support-btn" target="_blank" id="liveSupportBtn">
@@ -544,8 +561,8 @@ const slide2Data = [
   {name:"আন্টি লাভার গ্ৰুপ🥵", note:"সেরা দামে সকল প্রিমিয়াম ভিডিও 4.7 হাজার প্লাস ভিডিও আছে এবং প্রতিনিয়ত ভিডিও আপলোড করা হচ্ছে লাইভ টাইমের জন্য 🔥", price:59, demoLink:"https://t.me/example_demo_link"},
   {name:"Mallu Laak 🔞", note:"শুধুমাত্র বিশেষ সদস্যদের জন্য এবং Mallu সকল ভাইরাল ভিডিও ও নিয়মিত ভিডিও আপলোড । All Mallu premium videos unlock 🔓 🥵", price:29, demoLink:"https://t.me/example_demo_link"},
   {name:"বা।চ্চা।দের ভিডিও (CP)🔞", note:"সকল C*P কন্টেন্ট আছে ।(Tamil Desi and other countries videos 🔥", price:199, demoLink:"https://t.me/allinonedemo69/46?single"},
-  {name:"চাইনিজ গ্ৰুপ🔞", note:"এখানে 40 হাজার প্লাস ভিডিও ও ফটো পাবে । আর HD দেখতে পাবে কেনার সময় অবশ্যই ডেমো দেখো 🔥", price:49, demoLink:"https://t.me/allinonedemo69/31?single"},
-  {name:"Tamil Maja 🔞", note:"সকল এক্সক্লুসিভ কন্টেন্ট করে দেখতে পাবে । সাথে ডাউনলোড সুবিধা এবং লাইফ টাইম এর  জন্য । আইডি নষ্ট হলে অন্য আইডিতে এড পাবে ", price:29, demoLink:"https://t.me/allinonedemo69/34?single"},
+  {name:"চাইনিজ গ্ৰুপ🔞", note:"এখানে 40 হাজার প্লাস ভিডিও ও ফটো পাবে । আর HD দেখতে পাবে কেনার সময় অবশ্যই ডেমো দেখে কিনো 🔥", price:49, demoLink:"https://t.me/allinonedemo69/31?single"},
+  {name:"Tamil Maja 🔞", note:"সকল এক্সক্লুসিভ কন্টেন্ট করে দেখতে পাবে । সাথে ডাউনলোড সুবিধা এবং লাইফ টাইম এর জন্য । আইডি নষ্ট হলে অন্য আইডিতে এড পাবে ", price:29, demoLink:"https://t.me/allinonedemo69/34?single"},
   {name:"Heaven House🔞", note:"2.6 হাজার প্লাস ভিডিও । এবং প্রতিনিয়ত আপলোড চলতেছে । সাথে ডাউনলোড সুবিধা লাইফ টাইম এর জন্য । আইডি নষ্ট হলে অন্য আইডিতে পাবে ", price:40, demoLink:"https://t.me/allinonedemo69/42?single"},
   {name:"Mega Links (500 GB+)🔞", note:"এই মেঘা লিংক গুলোতে পাবে  700000 হাজার প্লাস ভিডিও । সকল ধরনের ভিডিও ফোল্ডার আকারে  পছন্দ মতো দেখতে পাবে ও ডাউনলোড করতে পারবে লাইফ টাইম এর জন্য । আইডি নষ্ট হলে অন্য আইডিতে এড পাবে ", price:299, demoLink:"https://t.me/allinonedemo69/48?single"},
   {name:"CCTV🔞", note:"এখানে মোট পাঁচটা প্রিমিয়াম গ্রুপের লিংক পাবে । এখানে মোট ১৫ হাজার প্লাস ভিডিও আছে লাইফ টাইম এর জন্য আইডি নষ্ট হয়ে গেলে অন্য আইডিতে এড পাবে", price:149, demoLink:"https://t.me/allinonedemo69/44?single"},
@@ -568,10 +585,6 @@ function loadDataFromLocalStorage() {
     if (storedCart) {
       cart = JSON.parse(storedCart);
     }
-    const storedReceipts = localStorage.getItem('purchaseReceipts');
-    if (storedReceipts) {
-        receipts = JSON.parse(storedReceipts);
-    }
   } catch (e) {
     console.error("Failed to load data from Local Storage", e);
   }
@@ -582,7 +595,6 @@ function saveDataToLocalStorage() {
   try {
     localStorage.setItem('purchaseHistoryData', JSON.stringify(purchasedHistory));
     localStorage.setItem('cartData', JSON.stringify(cart));
-    localStorage.setItem('purchaseReceipts', JSON.stringify(receipts));
   } catch (e) {
     console.error("Failed to save data to Local Storage", e);
   }
@@ -591,7 +603,6 @@ function saveDataToLocalStorage() {
 let cart = [];
 let purchasedHistory = [];
 let lastPaymentDetails = {};
-let receipts = {}; // নতুন ভ্যারিয়েবল
 
 /* ============================
    Language Data
@@ -635,7 +646,7 @@ const langData = {
     backBtnText: 'Back',
     backToHomeBtnText: 'Back to Home',
     notAddedBtnText: 'এখনো এড পাইনি',
-    downloadReceiptBtnText: 'প্রমাণপত্র ডাউনলোড করুন',
+    downloadReceiptBtnText: 'ডাউনলোড প্রমাণপত্র',
     addedToCart: 'কার্টে যোগ করা হয়েছে!',
     buyFromCart: '💸 কার্ট থেকে পেমেন্ট করুন',
     buyNowText: '💸 Buy Now',
@@ -738,6 +749,7 @@ function setLanguage(lang) {
       document.getElementById('receipt-name').previousElementSibling.innerText = "👤 নাম:";
       document.getElementById('receipt-group').previousElementSibling.innerText = "🔗 গ্রুপ:";
       document.getElementById('receipt-trx').previousElementSibling.innerText = "🔑 ট্রানজেকশন আইডি:";
+      document.getElementById('receipt-code').previousElementSibling.innerText = "🔐 যাচাই কোড:";
       document.getElementById('receipt-time').previousElementSibling.innerText = "📅 সময়:";
       document.getElementById('receipt-price').previousElementSibling.innerText = "💰 দাম:";
   }
@@ -747,25 +759,42 @@ function setLanguage(lang) {
    Navigation / Views
    ============================ */
 const VIEWS = ['tgMarket','slide1','slide2','slide3','cartSlide','paymentSlide','successSlide'];
-let historyStack = [];
-let currentView = 'tgMarket';
 
-function showView(viewId, pushHistory=true){
-  if (!VIEWS.includes(viewId)) return;
-  if (pushHistory && currentView) historyStack.push(currentView);
-  VIEWS.forEach(v => {
-    const el = document.getElementById(v);
-    if (el) el.style.display = (v === viewId ? 'block' : 'none');
-  });
-  currentView = viewId;
-  try { history.replaceState(null, '', '#'+viewId); } catch(e){}
+function showView(viewId){
+    if (!VIEWS.includes(viewId)) return;
+    VIEWS.forEach(v => {
+        const el = document.getElementById(v);
+        if (el) el.style.display = (v === viewId ? 'block' : 'none');
+    });
+    // Update the URL hash
+    window.location.hash = viewId;
 }
 
 function goBack(){
-  const prev = historyStack.pop();
-  if (prev) showView(prev, false);
-  else showView('tgMarket', false);
+    if (window.location.hash === '#tgMarket' || window.location.hash === '') {
+        // If on the home page, do nothing to prevent exiting the site
+        return;
+    }
+    history.back();
 }
+
+// Handle browser back button (mobile back button)
+window.addEventListener('popstate', (event) => {
+    // Determine which view to show based on the URL hash
+    const currentHash = window.location.hash;
+    if (currentHash === '') {
+        showView('tgMarket');
+    } else {
+        const viewId = currentHash.substring(1); // Remove the '#'
+        if (VIEWS.includes(viewId)) {
+            showView(viewId);
+        } else {
+            // Fallback to home if the hash is not recognized
+            showView('tgMarket');
+        }
+    }
+});
+
 
 /* ============================
    Render Reviews
@@ -1045,14 +1074,14 @@ function showPaymentForCart() {
             name: item.name,
             price: item.price,
             time: purchaseTime,
-            receiptId: null // initially null
+            receiptData: null
         });
     });
     
     cart = []; // Clear the cart
     saveDataToLocalStorage(); // ডেটা সেভ করুন
     
-    showView('paymentSlide', true);
+    showView('paymentSlide');
 }
 
 function showPaymentForSingleItem(item) {
@@ -1073,11 +1102,11 @@ function showPaymentForSingleItem(item) {
         name: item.name,
         price: item.price,
         time: purchaseTime,
-        receiptId: null // initially null
+        receiptData: null // প্রমাণপত্রের ডেটা এখানে যোগ করা হবে
     });
     saveDataToLocalStorage(); // ডেটা সেভ করুন
     
-    showView('paymentSlide', true);
+    showView('paymentSlide');
 }
 
 /* ============================
@@ -1107,38 +1136,44 @@ function renderHistory(){
     const actionBtnContainer = document.createElement('div');
     actionBtnContainer.style = 'display:flex; flex-direction:column; gap:8px;';
 
+    // Download Receipt Button (if receiptData exists)
+    if (item.receiptData) {
+        const downloadBtn = document.createElement('button');
+        downloadBtn.className = 'smallBtn history-download-btn';
+        downloadBtn.textContent = langData[currentLang].downloadReceiptBtnText;
+        downloadBtn.addEventListener('click', () => {
+            downloadReceipt(item.receiptData);
+        });
+        actionBtnContainer.appendChild(downloadBtn);
+    }
+
+    // "Not Added Yet" Button
     const supportLink = document.createElement('a');
     supportLink.href = TELEGRAM_SUPPORT_LINK;
     supportLink.target = '_blank';
     supportLink.className = 'smallBtn btn ghost';
-    supportLink.style = 'padding:8px 12px; border:1px solid #d4e8ff; text-decoration:none; margin-top: auto; white-space:nowrap;';
+    supportLink.style = 'padding:8px 12px; border:1px solid #d4e8ff; text-decoration:none; white-space:nowrap;';
     supportLink.textContent = langData[currentLang].notAddedBtnText;
+    actionBtnContainer.appendChild(supportLink);
     
     div.appendChild(info);
-    
-    // Check if a receipt exists for this item
-    if (receipts[item.receiptId]) {
-      const downloadBtn = document.createElement('button');
-      downloadBtn.className = 'history-download-btn';
-      downloadBtn.textContent = langData[currentLang].downloadReceiptBtnText;
-      downloadBtn.addEventListener('click', () => {
-          downloadReceipt(receipts[item.receiptId]);
-      });
-      actionBtnContainer.appendChild(downloadBtn);
-    }
-    
-    actionBtnContainer.appendChild(supportLink);
     div.appendChild(actionBtnContainer);
     container.appendChild(div);
   });
 }
 
 function downloadReceipt(imageDataUrl) {
-    const link = document.createElement('a');
-    link.download = `receipt_${Date.now()}.png`;
-    link.href = imageDataUrl;
-    link.click();
-    showNotification("প্রমাণপত্র ডাউনলোড হচ্ছে।");
+    if (imageDataUrl) {
+        const link = document.createElement('a');
+        link.download = `receipt_${Date.now()}.png`;
+        link.href = imageDataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showNotification("প্রমাণপত্র ডাউনলোড হচ্ছে।");
+    } else {
+        showNotification("ডাউনলোড করার জন্য কোনো ছবি নেই।");
+    }
 }
 
 
@@ -1148,6 +1183,15 @@ function downloadReceipt(imageDataUrl) {
 function escapeHtml(s){
   if (!s && s !== 0) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function generateRandomCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 6; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
 }
 
 function sendToTelegramServer(payload){
@@ -1167,6 +1211,7 @@ function sendToTelegramServer(payload){
         "💬 ইউজারনেম: " + escapeHtml(payload.telegram_username),
         "💰 পরিমাণ: " + escapeHtml(payload.amount),
         "🔑 ট্রানজেকশন: " + escapeHtml(payload.trx),
+        "🔐 যাচাই কোড: " + escapeHtml(payload.transactionCode), // নতুন যোগ করা হয়েছে
         "👥 গ্রুপ: " + escapeHtml(payload.groupName)
       ];
       const textHtml = "<pre>"+escapeHtml(lines.join("\n"))+"</pre>";
@@ -1199,15 +1244,18 @@ document.getElementById('paymentForm').addEventListener('submit', function(e){
     hour12: true
   });
   
+  const transactionCode = generateRandomCode(); // নতুন কোড তৈরি করা হচ্ছে
+  
   lastPaymentDetails = {
       name: name,
       groupName: groupName,
       amount: amount,
       trx: trx,
-      time: purchaseTime
+      time: purchaseTime,
+      code: transactionCode
   };
 
-  const payload = {name, telegram_username, amount, trx, groupName};
+  const payload = {name, telegram_username, amount, trx, groupName, transactionCode};
 
   const submitBtn = this.querySelector('button[type="submit"]');
   submitBtn.disabled = true;
@@ -1215,20 +1263,46 @@ document.getElementById('paymentForm').addEventListener('submit', function(e){
 
   sendToTelegramServer(payload).then(res => {
     document.getElementById('successText').innerText = langData[currentLang].successText;
-    
-    // Generate and save receipt image
-    const receiptId = 'receipt_' + Date.now().toString();
-    const imageDataUrl = generateReceipt(lastPaymentDetails); // নতুন ফাংশন ব্যবহার
-    receipts[receiptId] = imageDataUrl;
-    
-    // Find the most recent purchase and update its receiptId
-    if (purchasedHistory.length > 0) {
-        const lastPurchase = purchasedHistory[purchasedHistory.length - 1];
-        lastPurchase.receiptId = receiptId;
-    }
 
-    saveDataToLocalStorage();
-    showView('successSlide', true);
+    // পেমেন্টের বিবরণ দিয়ে প্রমাণপত্রের HTML আপডেট করুন
+    document.getElementById('receipt-name').innerText = lastPaymentDetails.name;
+    document.getElementById('receipt-group').innerText = lastPaymentDetails.groupName;
+    document.getElementById('receipt-trx').innerText = lastPaymentDetails.trx;
+    document.getElementById('receipt-code').innerText = lastPaymentDetails.code;
+    document.getElementById('receipt-time').innerText = lastPaymentDetails.time;
+    document.getElementById('receipt-price').innerText = lastPaymentDetails.amount;
+    
+    // প্রমাণপত্রের HTML অংশটি দৃশ্যমান করুন
+    const receiptTemplateBox = document.getElementById('receipt-template-box');
+    receiptTemplateBox.style.display = 'block';
+
+    // HTML কে ক্যানভাসে রেন্ডার করুন এবং ছবিটি দেখান
+    html2canvas(receiptTemplateBox, {
+        scale: 2,
+        useCORS: true
+    }).then(canvas => {
+        const imageDataUrl = canvas.toDataURL('image/png');
+        const receiptImage = document.getElementById('receiptImage');
+        receiptImage.src = imageDataUrl;
+        receiptImage.style.display = 'block';
+        document.getElementById('downloadReceiptBtn').style.display = 'block';
+        
+        // Save receipt data to the last history item
+        if (purchasedHistory.length > 0) {
+            purchasedHistory[purchasedHistory.length - 1].receiptData = imageDataUrl;
+            saveDataToLocalStorage();
+        }
+        
+        // রেন্ডারিংয়ের পর HTML অংশটি আবার লুকানো হয়েছে
+        receiptTemplateBox.style.display = 'none';
+        
+        showView('successSlide');
+    }).catch(err => {
+        console.error("HTML to Canvas rendering failed: ", err);
+        showNotification("প্রমাণপত্র তৈরিতে সমস্যা হয়েছে।");
+        showView('successSlide');
+    });
+    
     
   }).catch(err => {
     console.error('Send error:', err);
@@ -1239,55 +1313,21 @@ document.getElementById('paymentForm').addEventListener('submit', function(e){
   });
 });
 
-/* New function to generate receipt as image data URL */
-function generateReceipt(details) {
-    const canvas = document.createElement('canvas');
-    canvas.width = 400;
-    canvas.height = 300;
-    const ctx = canvas.getContext('2d');
-    
-    // Background and border
-    ctx.fillStyle = '#f8fcff';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = '#e0f0ff';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
-    
-    // Header
-    ctx.fillStyle = '#0b63d6';
-    ctx.font = '24px Arial bold';
-    ctx.textAlign = 'center';
-    ctx.fillText('টেলিগ্ৰাম বাজার', canvas.width / 2, 40);
-    
-    // Receipt details
-    ctx.fillStyle = '#222';
-    ctx.font = '16px Arial';
-    ctx.textAlign = 'left';
-    
-    let y = 80;
-    const padding = 20;
+document.getElementById('downloadReceiptBtn').addEventListener('click', () => {
+    const imageDataUrl = document.getElementById('receiptImage').src;
+    if (imageDataUrl) {
+        const link = document.createElement('a');
+        link.download = `receipt_${Date.now()}.png`;
+        link.href = imageDataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        showNotification("প্রমাণপত্র ডাউনলোড হচ্ছে।");
+    } else {
+        showNotification("ডাউনলোড করার জন্য কোনো ছবি নেই।");
+    }
+});
 
-    const data = [
-        {label: '👤 নাম:', value: details.name},
-        {label: '🔗 গ্রুপ:', value: details.groupName},
-        {label: '🔑 ট্রানজেকশন আইডি:', value: details.trx},
-        {label: '📅 সময়:', value: details.time},
-        {label: '💰 দাম:', value: details.amount + " টাকা"}
-    ];
-    
-    data.forEach(item => {
-        ctx.fillStyle = '#666';
-        ctx.font = '16px Arial';
-        ctx.fillText(item.label, padding, y);
-        
-        ctx.fillStyle = '#222';
-        ctx.font = '16px Arial bold';
-        ctx.fillText(item.value, canvas.width / 2, y);
-        y += 40;
-    });
-
-    return canvas.toDataURL('image/png');
-}
 
 /* Copy to clipboard function */
 function copyToClipboard(elementId) {
@@ -1374,38 +1414,51 @@ crossBtn.addEventListener('click', hideWelcomeNotice);
 document.addEventListener('DOMContentLoaded', () => {
     // ডেটা লোড করার জন্য নতুন ফাংশন
     loadDataFromLocalStorage();
+    
     // Attach all event listeners and initialize the app
     document.getElementById('btnReviews').addEventListener('click', () => {
         renderReviews();
-        showView('slide1', true);
+        showView('slide1');
     });
     document.getElementById('btnOffers').addEventListener('click', () => {
         renderOffers(slide2Data);
-        showView('slide2', true);
+        showView('slide2');
     });
     document.getElementById('btnHistory').addEventListener('click', () => {
         renderHistory();
-        showView('slide3', true);
+        showView('slide3');
     });
     document.getElementById('btnCart').addEventListener('click', () => {
         renderCart();
-        showView('cartSlide', true);
+        showView('cartSlide');
     });
     document.getElementById('buyFromCartBtn').addEventListener('click', showPaymentForCart);
 
     document.getElementById('btnLangBn').addEventListener('click', () => setLanguage('bn'));
     document.getElementById('btnLangEn').addEventListener('click', () => setLanguage('en'));
-
+    
     document.getElementById('back1').addEventListener('click', goBack);
     document.getElementById('back2').addEventListener('click', goBack);
     document.getElementById('back3').addEventListener('click', goBack);
     document.getElementById('back5').addEventListener('click', goBack);
     document.getElementById('backFromCart').addEventListener('click', goBack);
-    document.getElementById('back4').addEventListener('click', () => { historyStack = []; showView('tgMarket', false); });
+    document.getElementById('back4').addEventListener('click', () => showView('tgMarket'));
 
     // Initial setup
     setLanguage('bn');
-    showView('tgMarket', false);
+    
+    // Check URL hash on page load to determine the initial view
+    if (window.location.hash) {
+        const initialView = window.location.hash.substring(1);
+        if (VIEWS.includes(initialView)) {
+            showView(initialView);
+        } else {
+            showView('tgMarket');
+        }
+    } else {
+        showView('tgMarket');
+    }
+    
     showWelcomeNotice();
 });
 </script>
